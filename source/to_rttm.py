@@ -37,6 +37,7 @@ def main(options):
     print("Nemo diarization tool v.{}. {}".format(VERSION, COPYRIGHTS))
     start_time = time.time()
     diarize(options.wav_file, 'cpu', options.num_speakers, options.temp_folder, options.config)
+    # build/temp/pred_rttms/
     dest = os.path.splitext(options.wav_file)[0] + '.rttm'
     print(dest, "{} sec".format(int(time.time() - start_time)))
 
