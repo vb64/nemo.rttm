@@ -2,6 +2,8 @@
 import os
 import sys
 import time
+import argparse
+
 from nemo_msdd import diarize
 
 VERSION = '1.0'
