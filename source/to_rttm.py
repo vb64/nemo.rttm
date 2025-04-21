@@ -33,6 +33,7 @@ PARSER.add_argument(
 
 
 def main(options):
+    """Entry point."""
     print("Nemo diarization tool v.{}. {}".format(VERSION, COPYRIGHTS))
     start_time = time.time()
     diarize(options.wav_file, 'cpu', options.num_speakers, options.temp_folder, options.config)
