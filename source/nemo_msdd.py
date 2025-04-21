@@ -70,7 +70,7 @@ def diarize(wav_file, device, num_speakers, temp_path, config_path):
     """Initialize NeMo MSDD diarization model."""
     from nemo.collections.asr.parts.preprocessing.segment import AudioSegment
 
-    AudioSegment._convert_samples_to_float32 = lambda samples: samples.astype(  # pylint: disable=protected-access
+    AudioSegment._convert_samples_to_float32 = lambda _cls, samp: samp.astype(  # pylint: disable=protected-access
       'float32'
     )
 
