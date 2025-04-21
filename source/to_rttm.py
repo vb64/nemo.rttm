@@ -2,6 +2,7 @@
 import os
 import sys
 import time
+from nemo_msdd import diarize
 
 VERSION = '1.0'
 COPYRIGHTS = 'Copyrights by Vitaly Bogomolov 2025'
@@ -32,6 +33,7 @@ PARSER.add_argument(
 def main(options):
     print("Nemo diarization tool v.{}. {}".format(VERSION, COPYRIGHTS))
     start_time = time.time()
+    diarize(options.wav_file, 'cpu', options.num_speakers, options.temp_folder, options.config)
     dest = os.path.splitext(options.wav_file)[0] + '.rttm'
     print(dest, "{} sec".format(int(time.time() - start_time)))
 

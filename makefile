@@ -23,7 +23,7 @@ all:
 	$(PYLINT) $(SOURCE)
 
 rttm:
-	$(PYTHON) $(SOURCE)/to_rttm.py
+	$(PYTHON) $(SOURCE)/to_rttm.py --config nemo.config/diar_infer_telephonic.yaml --temp_folder build/temp fixtures/mono.wav
 
 setup: setup_python setup_pip
 
