@@ -68,6 +68,12 @@ def create_config(wav_file, output_dir, config_path, num_speakers=0):
 
 def diarize(wav_file, device, num_speakers, temp_path, config_path):
     """Initialize NeMo MSDD diarization model."""
+    from nemo.collections.asr.parts.preprocessing.segment import AudioSegment
+
+    AudioSegment._convert_samples_to_float32 = lambda samples: samples.astype(  # pylint: disable=protected-access
+      'float32'
+    )
+
     config = create_config(wav_file, temp_path, config_path, num_speakers=num_speakers)
     model = NeuralDiarizer(cfg=config).to(device)
 
