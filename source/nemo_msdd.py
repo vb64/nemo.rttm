@@ -79,5 +79,5 @@ def diarize(wav_file, device, num_speakers, temp_path, config_path):
 
     config = create_config(wav_file, temp_path, config_path, num_speakers=num_speakers)
     model = NeuralDiarizer(cfg=config).to(device)
-    print("###", model.cfg_diar_infer.batch_size)
+    print("###", model.clustering_embedding.cfg_diar_infer.batch_size)
     return 0  # model.diarize()
