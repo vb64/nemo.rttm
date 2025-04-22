@@ -2,7 +2,13 @@
 import os
 import sys
 import time
+import time
+import shutil
 import argparse
+
+import torch
+import torchaudio
+import faster_whisper
 
 from nemo_msdd import diarize
 
@@ -11,8 +17,8 @@ COPYRIGHTS = 'Copyrights by Vitaly Bogomolov 2025'
 PARSER = argparse.ArgumentParser(description='Nemo diarize tool.')
 
 PARSER.add_argument(
-  "wav_file",
-  help="Wav file for diarize."
+  "mp3_file",
+  help="Mp3 file for diarize."
 )
 PARSER.add_argument(
   "--num_speakers",
@@ -36,9 +42,19 @@ def main(options):
     """Entry point."""
     print("Nemo diarization tool v.{}. {}".format(VERSION, COPYRIGHTS))
     start_time = time.time()
-    diarize(options.wav_file, 'cpu', options.num_speakers, options.temp_folder, options.config)
-    # build/temp/pred_rttms/
-    dest = os.path.splitext(options.wav_file)[0] + '.rttm'
+
+    waveform = faster_whisper.decode_audio(options.mp3_file)
+    wav_file = os.path.join(options.temp_folder, "mono.wav")
+    torchaudio.save(
+      wav_file,
+      torch.from_numpy(waveform).unsqueeze(0).float(),
+      16000,
+      channels_first=True
+    )
+    diarize(wav_file, 'cpu', options.num_speakers, options.temp_folder, options.config)
+    dest = os.path.splitext(options.mp3_file)[0] + '.rttm'
+    rttm_file = os.path.join(options.temp_folder, "pred_rttms", "mono.rttm")
+    shutil.copyfile(rttm_file, dest)
     print(dest, "{} sec".format(int(time.time() - start_time)))
 
 
