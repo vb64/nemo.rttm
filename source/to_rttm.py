@@ -43,6 +43,7 @@ def main(options):
     print("Nemo diarization tool v.{}. {}".format(VERSION, COPYRIGHTS))
     start_time = time.time()
 
+    os.makedirs(options.temp_folder, exist_ok=True)
     waveform = faster_whisper.decode_audio(options.mp3_file)
     wav_file = os.path.join(options.temp_folder, "mono.wav")
     torchaudio.save(
