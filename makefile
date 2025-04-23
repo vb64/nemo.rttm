@@ -29,7 +29,7 @@ setup: setup_python setup_pip
 
 setup_pip:
 	$(PIP) --upgrade pip
-	$(PIP) -r requirements.txt
+	$(PIP) -c constraints.txt -r requirements.txt
 	$(PIP) -r dev.txt
 
 setup_python:
