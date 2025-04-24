@@ -66,6 +66,7 @@ def create_config(wav_file, output_dir, config_path, num_speakers=0):
     return config
 
 
+# Failed on torch > 2.1.2
 # nemo/collections/asr/parts/utils/offline_clustering.py", line 553, in eigDecompose
 # lambdas, diffusion_map = eigh(laplacian)
 # https://github.com/pytorch/pytorch/issues/68291
@@ -79,5 +80,4 @@ def diarize(wav_file, device, num_speakers, temp_path, config_path):
 
     config = create_config(wav_file, temp_path, config_path, num_speakers=num_speakers)
     model = NeuralDiarizer(cfg=config).to(device)
-    # print("###", model.clustering_embedding.cfg_diar_infer.batch_size)
     return model.diarize()
