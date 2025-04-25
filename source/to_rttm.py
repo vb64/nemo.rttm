@@ -20,6 +20,10 @@ PARSER.add_argument(
   help="Mp3 file for diarize."
 )
 PARSER.add_argument(
+  "rttm_file",
+  help="Rttm file for output."
+)
+PARSER.add_argument(
   "--num_speakers",
   type=int,
   default=0,
@@ -43,6 +47,7 @@ def main(options):
     start_time = time.time()
 
     os.makedirs(options.temp_folder, exist_ok=True)
+
     waveform = faster_whisper.decode_audio(options.mp3_file)
     wav_file = os.path.join(options.temp_folder, "mono.wav")
     torchaudio.save(  # pylint: disable=no-member
@@ -52,10 +57,11 @@ def main(options):
       channels_first=True
     )
     diarize(wav_file, 'cpu', options.num_speakers, options.temp_folder, options.config)
-    dest = os.path.splitext(options.mp3_file)[0] + '.rttm'
     rttm_file = os.path.join(options.temp_folder, "pred_rttms", "mono.rttm")
-    shutil.copyfile(rttm_file, dest)
-    print(dest, "{} sec".format(int(time.time() - start_time)))
+    shutil.copyfile(rttm_file, options.rttm_file)
+    shutil.rmtree(options.temp_folder)
+
+    print(options.rttm_file, "{} sec".format(int(time.time() - start_time)))
 
 
 if __name__ == '__main__':  # pragma: no cover
