@@ -13,14 +13,20 @@ FLAKE8 = $(PYTHON) -m flake8
 PYLINT = $(PYTHON) -m pylint
 PIP = $(PYTHON) -m pip install
 
+MP3 = \
+xxx.mp3 \
+
+RTTM = $(addprefix build/,$(subst .mp3,.rttm,$(MP3)))
 
 all:
 	$(PYTHON) -m pydocstyle $(SOURCE)
 	$(FLAKE8) $(SOURCE)
 	$(PYLINT) $(SOURCE)
 
-rttm:
-	$(PYTHON) $(SOURCE)/to_rttm.py --config nemo.config/diar_infer_telephonic.yaml --temp_folder build/temp fixtures/short.mp3 build/short.rttm
+build/%.rttm: build/%.mp3
+	$(PYTHON) $(SOURCE)/to_rttm.py --config nemo.config/diar_infer_telephonic.yaml --temp_folder build/temp $< $@
+
+rttm: $(RTTM)
 
 setup: setup_python setup_pip
 
