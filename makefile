@@ -3,17 +3,14 @@
 # git remote prune origin
 ifeq ($(OS),Windows_NT)
 PYTHON = venv/Scripts/python.exe
-PTEST = venv/Scripts/pytest.exe
 else
 PYTHON = ./venv/bin/python
-PTEST = ./venv/bin/pytest
 endif
 
 SOURCE = source
 
 FLAKE8 = $(PYTHON) -m flake8
 PYLINT = $(PYTHON) -m pylint
-PYTEST = $(PTEST) --cov=$(SOURCE) --cov-report term:skip-covered
 PIP = $(PYTHON) -m pip install
 
 

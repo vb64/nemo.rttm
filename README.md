@@ -1,13 +1,27 @@
-# Nemo rttm file
+# Получение rttm-файла из mp3
 
-Ubuntu 22.04
+## Настройка под Windows.
 
-Links:
+Предварительно установить следующие программы.
 
-- Automatic Speech Recognition (ASR) [Tutorials](https://docs.nvidia.com/nemo-framework/user-guide/latest/playbooks/index.html#automatic-speech-recognition-asr-tutorials)
-- Error [on rttm](https://github.com/pytorch/pytorch/issues/68291)
+- GNU [Unix Utils](http://unxutils.sourceforge.net/) для операций через makefile
+- [Git for Windows](https://git-scm.com/download/win) для доступа к репозитарию исходных кодов.
+- [Python3.10.11](https://www.python.org/downloads/release/python-31011/)
+- [ffmpeg](https://ffmpeg.org/download.html) (распаковать архив и добавить в PATH)
+- build tools by installing [Microsoft Visual Studio](https://visualstudio.microsoft.com/downloads/)
 
-File 2025_04_21.rttm 59:14 (3554 sec)
+## Настройка под Ubuntu. 22.04
 
-- zond 12 (22.04) -> 2988 sec
-- ya-22-8 -> 2634 sec
+```
+sudo apt update
+sudo apt-get install build-essential python3.10-venv python3-pip ffmpeg screen curl
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+## Установка программы
+
+```bash
+git clone https://github.com/vb64/nemo.rttm.git
+cd nemo.rttm
+make setup PYTHON_BIN=python3
+```
