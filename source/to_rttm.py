@@ -2,7 +2,6 @@
 import os
 import sys
 import time
-import time
 import shutil
 import argparse
 
@@ -46,7 +45,7 @@ def main(options):
     os.makedirs(options.temp_folder, exist_ok=True)
     waveform = faster_whisper.decode_audio(options.mp3_file)
     wav_file = os.path.join(options.temp_folder, "mono.wav")
-    torchaudio.save(
+    torchaudio.save(  # pylint: disable=no-member
       wav_file,
       torch.from_numpy(waveform).unsqueeze(0).float(),
       16000,
