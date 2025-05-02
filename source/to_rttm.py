@@ -8,7 +8,9 @@ import argparse
 import torch
 import torchaudio
 import faster_whisper
+from pydub import AudioSegment
 
+from audio import split_on_silence_min_length
 from nemo_msdd import diarize
 
 VERSION = '1.0'
@@ -47,9 +49,22 @@ PARSER.add_argument(
 )
 
 
-def get_tasks(mp3_file, _temp_folder, _max_length):
+def get_tasks(mp3_file, temp_folder, max_length):
     """Create task list for given mp3."""
-    return [mp3_file]
+    audio = AudioSegment.from_mp3(mp3_file)
+    if len(audio) <= max_length:
+        return [mp3_file]
+
+    chunks = split_on_silence_min_length(
+      audio, min_silence_len=100, silence_thresh=-40, min_chunk_length=max_length
+    )
+    name = os.path.join(temp_folder, "nemo_chunk_")
+    names = []
+    for i, chunk in enumerate(chunks):
+        names.append(name + str(i) + ".mp3")
+        chunk.export(names[-1], format='mp3')
+
+    return names
 
 
 def join_rttms(rttms, rttm_file):
@@ -81,7 +96,7 @@ def main(options):
     os.makedirs(options.temp_folder, exist_ok=True)
     rttms = [
       make_rttm(i, options.num_speakers, options.config, options.temp_folder)
-      for i in get_tasks(options.mp3_file, options.temp_folder, options.max_length)
+      for i in get_tasks(options.mp3_file, options.temp_folder, options.max_length * 60 * 1000)
     ]
     join_rttms(rttms, options.rttm_file)
     shutil.rmtree(options.temp_folder)
