@@ -39,6 +39,12 @@ PARSER.add_argument(
   default='nemo.cfg',
   help="Path to Nemo config file.",
 )
+PARSER.add_argument(
+  "--max_length",
+  type=int,
+  default=90,
+  help="Split the input file into parts if its duration in minutes exceeds the parameter value. Default is 90 minutes.",
+)
 
 
 def main(options):
