@@ -19,8 +19,8 @@ xxx.mp3 \
 RTTM = $(addprefix build/,$(subst .mp3,.rttm,$(MP3)))
 
 all:
-	$(PYTHON) -m pydocstyle $(SOURCE)
 	$(FLAKE8) $(SOURCE)
+	$(PYTHON) -m pydocstyle $(SOURCE)
 	$(PYLINT) $(SOURCE)
 
 build/%.rttm: build/%.mp3
