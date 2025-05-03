@@ -12,6 +12,7 @@ from pydub import AudioSegment
 
 from audio import split_on_silence_min_length
 from nemo_msdd import diarize
+from rttm import NemoRttm
 
 VERSION = '1.0'
 COPYRIGHTS = 'Copyrights by Vitaly Bogomolov 2025'
@@ -67,9 +68,13 @@ def get_tasks(mp3_file, temp_folder, max_length):
     return names
 
 
-def join_rttms(rttms, rttm_file):
-    """Create rttm files from list to single rttm file."""
-    shutil.copyfile(rttms[0], rttm_file)
+def join_rttms(rttms):
+    """Join rttm files from list to single rttm file."""
+    rttm = NemoRttm.from_file(rttms[0])
+    for i in rttms[1:]:
+        rttm.append(NemoRttm.from_file(i))
+
+    return rttm
 
 
 def make_rttm(mp3_file, num_speakers, config_file, temp_folder):
@@ -98,7 +103,8 @@ def main(options):
       make_rttm(i, options.num_speakers, options.config, options.temp_folder)
       for i in get_tasks(options.mp3_file, options.temp_folder, options.max_length * 60 * 1000)
     ]
-    join_rttms(rttms, options.rttm_file)
+    rttm = join_rttms(rttms)
+    rttm.save(options.rttm_file)
     shutil.rmtree(options.temp_folder)
 
     print(options.rttm_file, "{} sec".format(int(time.time() - start_time)))

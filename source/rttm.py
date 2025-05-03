@@ -27,6 +27,8 @@ class NemoRow:
         obj.length = int(float(fields[4]) * 1000)
         obj.speaker = int(fields[7].split('_')[1])
 
+        return obj
+
     @property
     def line(self):
         """Return data as string."""
@@ -45,7 +47,6 @@ class NemoRttm:
 
     def __init__(self):
         """Make empty file."""
-        self.speakers = {}
         self.rows = []
 
     @classmethod
@@ -54,11 +55,9 @@ class NemoRttm:
         obj = cls()
         with open(file_name, 'r', encoding=cls.encoding) as inp:
             for line in inp:
-                row = NemoRow.from_line(line)
-                if row.speaker not in obj.speakers:
-                    obj.speakers[row.speaker] = []
-                obj.speakers[row.speaker].append(row)
-                obj.rows.append(row)
+                obj.rows.append(NemoRow.from_line(line))
+
+        return obj
 
     def save(self, file_name):
         """Save data to file."""
@@ -68,3 +67,15 @@ class NemoRttm:
 
     def append(self, rttm):
         """Append data from another rttm."""
+        last = self.rows[-1]
+        offset = last.start + last.length
+        first = rttm.rows[0]
+        speaker_map = {}
+        if last.speaker != first.speaker:
+            speaker_map[first.speaker] = last.speaker
+            speaker_map[last.speaker] = first.speaker
+
+        for row in rttm.rows:
+            row.speaker = speaker_map.get(row.speaker, row.speaker)
+            row.start += offset
+            self.rows.append(row)
