@@ -24,3 +24,9 @@ class TestToRttm(TestBase):
         ])
 
         assert main(options) == 0
+
+    def test_get_tasks(self):
+        """Check get_tasks function."""
+        from to_rttm import get_tasks
+
+        assert len(get_tasks(self.fixture('short.mp3'), self.build(), 5 * 1000)) == 4
