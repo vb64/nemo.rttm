@@ -48,11 +48,13 @@ class NemoRttm:
     def __init__(self):
         """Make empty file."""
         self.rows = []
+        self.length_ms = 0
 
     @classmethod
-    def from_file(cls, file_name):
+    def from_file(cls, file_name, length_ms):
         """Load data from file."""
         obj = cls()
+        obj.length_ms = length_ms
         with open(file_name, 'r', encoding=cls.encoding) as inp:
             for line in inp:
                 obj.rows.append(NemoRow.from_line(line))
@@ -68,7 +70,6 @@ class NemoRttm:
     def append(self, rttm):
         """Append data from another rttm."""
         last = self.rows[-1]
-        offset = last.start + last.length
         first = rttm.rows[0]
         speaker_map = {}
         if last.speaker != first.speaker:
@@ -77,14 +78,17 @@ class NemoRttm:
 
         for row in rttm.rows:
             row.speaker = speaker_map.get(row.speaker, row.speaker)
-            row.start += offset
+            row.start += self.length_ms
             self.rows.append(row)
+
+        self.length_ms += rttm.length_ms
 
 
 def join_rttms(rttms):
     """Join rttm files from list to single rttm file."""
-    rttm = NemoRttm.from_file(rttms[0])
-    for i in rttms[1:]:
-        rttm.append(NemoRttm.from_file(i))
+    name, length = rttms[0]
+    rttm = NemoRttm.from_file(name, length)
+    for name, length in rttms[1:]:
+        rttm.append(NemoRttm.from_file(name, length))
 
     return rttm

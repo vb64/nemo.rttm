@@ -80,8 +80,12 @@ def make_rttm(mp3_file, num_speakers, config_file, temp_folder):
       channels_first=True
     )
     diarize(wav_file, 'cpu', num_speakers, temp_folder, config_file)
+    audio = AudioSegment.from_mp3(mp3_file)
 
-    return os.path.join(temp_folder, "pred_rttms", name + ".rttm")
+    return (
+      os.path.join(temp_folder, "pred_rttms", name + ".rttm"),
+      len(audio),
+    )
 
 
 def main(options):
