@@ -1,16 +1,16 @@
-# Получение rttm-файла из mp3
+# РџРѕР»СѓС‡РµРЅРёРµ rttm-С„Р°Р№Р»Р° РёР· mp3
 
-## Настройка под Windows.
+## РќР°СЃС‚СЂРѕР№РєР° РїРѕРґ Windows.
 
-Предварительно установить следующие программы.
+РџСЂРµРґРІР°СЂРёС‚РµР»СЊРЅРѕ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ СЃР»РµРґСѓСЋС‰РёРµ РїСЂРѕРіСЂР°РјРјС‹.
 
-- GNU [Unix Utils](http://unxutils.sourceforge.net/) для операций через makefile
-- [Git for Windows](https://git-scm.com/download/win) для доступа к репозитарию исходных кодов.
+- GNU [Unix Utils](http://unxutils.sourceforge.net/) РґР»СЏ РѕРїРµСЂР°С†РёР№ С‡РµСЂРµР· makefile
+- [Git for Windows](https://git-scm.com/download/win) РґР»СЏ РґРѕСЃС‚СѓРїР° Рє СЂРµРїРѕР·РёС‚Р°СЂРёСЋ РёСЃС…РѕРґРЅС‹С… РєРѕРґРѕРІ.
 - [Python3.10.11](https://www.python.org/downloads/release/python-31011/)
-- [ffmpeg](https://ffmpeg.org/download.html) (распаковать архив и добавить в PATH)
+- [ffmpeg](https://ffmpeg.org/download.html) (СЂР°СЃРїР°РєРѕРІР°С‚СЊ Р°СЂС…РёРІ Рё РґРѕР±Р°РІРёС‚СЊ РІ PATH)
 - build tools by installing [Microsoft Visual Studio](https://visualstudio.microsoft.com/downloads/)
 
-## Настройка под Ubuntu. 22.04
+## РќР°СЃС‚СЂРѕР№РєР° РїРѕРґ Ubuntu. 22.04
 
 ```
 sudo apt update
@@ -18,10 +18,18 @@ sudo apt-get install build-essential python3.10-venv python3-pip ffmpeg screen c
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-## Установка программы
+## РЈСЃС‚Р°РЅРѕРІРєР° РїСЂРѕРіСЂР°РјРјС‹
 
 ```bash
 git clone https://github.com/vb64/nemo.rttm.git
 cd nemo.rttm
 make setup PYTHON_BIN=python3
 ```
+
+## РЎСЃС‹Р»РєРё
+
+- РЎРїРµС†РёС„РёРєР°С†РёСЏ [С„РѕСЂРјР°С‚Р° RTTM](https://habr.com/ru/articles/900988/)
+- [3D-Speaker](https://github.com/modelscope/3D-Speaker) Speaker Diarization
+- [SpeechBrain](https://github.com/speechbrain)
+- [Kaldi](https://www.assemblyai.com/blog/kaldi-speech-recognition-for-beginners-a-simple-tutorial)
+- [speaker-diarization-3.1](https://github.com/pyannote/hf-speaker-diarization-3.1) HUGGINGFACE TOKEN

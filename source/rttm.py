@@ -1,7 +1,4 @@
-"""RTTM file operations.
-
-https://habr.com/ru/articles/900988/
-"""
+"""RTTM file operations."""
 
 
 class NemoRow:
