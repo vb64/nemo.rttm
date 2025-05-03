@@ -11,7 +11,7 @@ class TestAudio(TestBase):
 
     def test_split_on_silence_min_length(self):
         """Check split_on_silence_min_length function."""
-        from source.audio import split_on_silence_min_length
+        from audio import split_on_silence_min_length
 
         audio = AudioSegment.from_file(self.fixture('short.mp3'))
         assert len(split_on_silence_min_length(audio, min_chunk_length=2 * 1000)) == 2

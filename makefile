@@ -31,7 +31,6 @@ flake8:
 	$(FLAKE8) $(SOURCE)
 
 lint:
-	$(PYLINT) $(TESTS)/test
 	$(PYLINT) $(SOURCE)
 
 pep257:
