@@ -32,6 +32,7 @@ flake8:
 
 lint:
 	$(PYLINT) $(SOURCE)
+	$(PYLINT) $(TESTS)/test
 
 pep257:
 	$(PYTHON) -m pydocstyle $(TESTS)/test
