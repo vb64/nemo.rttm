@@ -79,3 +79,12 @@ class NemoRttm:
             row.speaker = speaker_map.get(row.speaker, row.speaker)
             row.start += offset
             self.rows.append(row)
+
+
+def join_rttms(rttms):
+    """Join rttm files from list to single rttm file."""
+    rttm = NemoRttm.from_file(rttms[0])
+    for i in rttms[1:]:
+        rttm.append(NemoRttm.from_file(i))
+
+    return rttm
