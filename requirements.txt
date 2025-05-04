@@ -2,3 +2,4 @@ nemo_toolkit[asr]==2.0.0rc0
 faster-whisper>=1.1.0
 torchaudio==2.1.2
 pydub==0.25.1
+audioread==3.0.1
