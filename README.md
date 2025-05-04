@@ -32,4 +32,5 @@ make setup PYTHON_BIN=python3
 - [3D-Speaker](https://github.com/modelscope/3D-Speaker) Speaker Diarization
 - [SpeechBrain](https://github.com/speechbrain)
 - [Kaldi](https://www.assemblyai.com/blog/kaldi-speech-recognition-for-beginners-a-simple-tutorial)
+- [How to get the duration of audio in Python?](https://www.geeksforgeeks.org/how-to-get-the-duration-of-audio-in-python/)
 - [speaker-diarization-3.1](https://github.com/pyannote/hf-speaker-diarization-3.1) HUGGINGFACE TOKEN
