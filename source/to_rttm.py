@@ -9,6 +9,7 @@ import torch
 import torchaudio
 import faster_whisper
 from pydub import AudioSegment
+import audioread
 
 from audio import split_on_silence_min_length
 from nemo_msdd import diarize
@@ -45,20 +46,26 @@ PARSER.add_argument(
 PARSER.add_argument(
   "--max_length",
   type=int,
-  default=90,
-  help="Split the input file into parts if its duration in minutes exceeds the parameter value. Default is 90 minutes.",
+  default=90 * 60,
+  help="Split the input file into parts if its duration in seconds exceeds the parameter value. Default is 5400 (90 minutes).",
 )
 
 
-def get_tasks(mp3_file, temp_folder, max_length):
+def get_tasks(mp3_file, temp_folder, max_length_sec):
     """Create task list for given mp3."""
-    audio = AudioSegment.from_mp3(mp3_file)
-    if len(audio) <= max_length:
+    length_sec = audioread.audio_open(mp3_file).duration
+    print("# File", mp3_file, length_sec, "sec")
+
+    if length_sec <= max_length_sec:
+        print("# Single file.")
         return [mp3_file]
 
+    audio = AudioSegment.from_mp3(mp3_file)
     chunks = split_on_silence_min_length(
-      audio, min_silence_len=100, silence_thresh=-40, min_chunk_length=max_length
+      audio, min_silence_len=100, silence_thresh=-40, min_chunk_length=max_length_sec * 1000
     )
+    print("# Split to chunks:", len(chunks))
+
     name = os.path.join(temp_folder, "nemo_chunk_")
     names = []
     for i, chunk in enumerate(chunks):
@@ -96,7 +103,7 @@ def main(options):
     os.makedirs(options.temp_folder, exist_ok=True)
     rttm = join_rttms([
       make_rttm(i, options.num_speakers, options.config, options.temp_folder)
-      for i in get_tasks(options.mp3_file, options.temp_folder, options.max_length * 60 * 1000)
+      for i in get_tasks(options.mp3_file, options.temp_folder, options.max_length)
     ])
     rttm.save(options.rttm_file)
     shutil.rmtree(options.temp_folder)
