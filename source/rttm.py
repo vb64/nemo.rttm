@@ -1,17 +1,18 @@
 """RTTM file operations."""
+import os
 
 
 class NemoRow:
     """Nemo RTTM file row."""
 
     # SPEAKER xxx.mp3 1   8.940   6.060 <NA> <NA> speaker_0 <NA> <NA>
-    row_template = "SPEAKER {} 1 {} {} <NA> <NA> speaker_{} <NA> <NA>\n"
+    row_template = "SPEAKER {} 1 {:.3f} {:.3f} <NA> <NA> speaker_{} <NA> <NA>\n"
+    file_name = ''
 
     def __init__(self):
         """Make empty row."""
         self.start = None
         self.length = None
-        self.fname = None
         self.speaker = None
 
     @classmethod
@@ -19,7 +20,6 @@ class NemoRow:
         """Load data from file."""
         obj = cls()
         fields = line.split()
-        obj.fname = fields[1]
         obj.start = int(float(fields[3]) * 1000)
         obj.length = int(float(fields[4]) * 1000)
         obj.speaker = int(fields[7].split('_')[1])
@@ -30,9 +30,9 @@ class NemoRow:
     def line(self):
         """Return data as string."""
         return self.row_template.format(
-          self.fname,
-          round(self.start / 1000.0, 3),
-          round(self.length / 1000.0, 3),
+          self.file_name,
+          self.start / 1000.0,
+          self.length / 1000.0,
           self.speaker
         )
 
@@ -60,6 +60,7 @@ class NemoRttm:
 
     def save(self, file_name):
         """Save data to file."""
+        NemoRow.file_name = os.path.basename(file_name)
         with open(file_name, 'wt', encoding=self.encoding) as out:
             for row in self.rows:
                 out.write(row.line)
