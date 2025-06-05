@@ -48,7 +48,7 @@ class NemoRttm:
         self.file_index = 0
 
     @classmethod
-    def from_file(cls, file_name, file_index, length_ms):
+    def from_file(cls, file_name, length_ms, file_index):
         """Load data from file."""
         obj = cls()
         obj.length_ms = length_ms

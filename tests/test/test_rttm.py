@@ -14,6 +14,8 @@ class TestRttm(TestBase):
         from rttm import join_rttms
 
         length_ms = len(AudioSegment.from_mp3(self.fixture('short.mp3')))
+        assert length_ms == 19593
+
         rttm = join_rttms([
           (self.fixture('xxx.rttm'), length_ms),
           (self.fixture('xxx.rttm'), length_ms),
