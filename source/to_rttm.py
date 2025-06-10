@@ -17,7 +17,7 @@ from audio import split_on_silence_min_length
 from nemo_msdd import diarize
 from rttm import join_rttms
 
-VERSION = '1.0'
+VERSION = '1.1'
 COPYRIGHTS = 'Copyrights by Vitaly Bogomolov 2025'
 PARSER = argparse.ArgumentParser(description='Nemo diarize tool.')
 
