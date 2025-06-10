@@ -9,6 +9,13 @@ from . import TestBase
 class TestRttm(TestBase):
     """Module rttm.py."""
 
+    def test_speakers(self):
+        """Check speakers count for rttm."""
+        from rttm import NemoRttm
+
+        rttm = NemoRttm.from_file(self.fixture('xxx.rttm'), 777, 0)
+        assert len(rttm.speakers) == 2
+
     def test_join_rttms(self):
         """Check join_rttms function."""
         from rttm import join_rttms

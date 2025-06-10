@@ -12,7 +12,7 @@ class NemoRow:
         self.start = None
         self.length = None
         self.speaker = None
-        self.file_index = rttm_file.file_index
+        self.rttm_file = rttm_file
 
     @classmethod
     def from_line(cls, line, rttm_file):
@@ -22,6 +22,7 @@ class NemoRow:
         obj.start = int(float(fields[3]) * 1000)
         obj.length = int(float(fields[4]) * 1000)
         obj.speaker = int(fields[7].split('_')[1])
+        obj.rttm_file.speakers.add(obj.speaker)
 
         return obj
 
@@ -29,7 +30,7 @@ class NemoRow:
     def line(self):
         """Return data as string."""
         return self.row_template.format(
-          self.file_index,
+          self.rttm_file.file_index,
           self.start / 1000.0,
           self.length / 1000.0,
           self.speaker
@@ -44,6 +45,7 @@ class NemoRttm:
     def __init__(self):
         """Make empty file."""
         self.rows = []
+        self.speakers = set()
         self.length_ms = 0
         self.file_index = 0
 
