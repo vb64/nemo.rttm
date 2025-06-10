@@ -67,8 +67,23 @@ class NemoRttm:
             for row in self.rows:
                 out.write(row.line)
 
+    def append_poly(self, rttm):
+        """Append data from rttm with speakers more then 2."""
+        start_speaker = len(self.speakers)
+        for row in rttm.rows:
+            row.speaker += start_speaker
+            row.start += self.length_ms
+            self.speakers.add(row.speaker)
+            self.rows.append(row)
+
+        self.length_ms += rttm.length_ms
+
     def append(self, rttm):
         """Append data from another rttm."""
+        if len(rttm.speakers) > 2:
+            self.append_poly(rttm)
+            return
+
         last = self.rows[-1]
         first = rttm.rows[0]
         speaker_map = {}
