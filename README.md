@@ -8,6 +8,7 @@
 - [Git for Windows](https://git-scm.com/download/win) для доступа к репозитарию исходных кодов.
 - [Python3.10.11](https://www.python.org/downloads/release/python-31011/)
 - [ffmpeg](https://ffmpeg.org/download.html) (распаковать архив и добавить в PATH)
+- [2019 Visual C++ runtime](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
 - build tools by installing [Microsoft Visual Studio](https://visualstudio.microsoft.com/downloads/)
 
 ## Настройка под Ubuntu. 22.04
@@ -23,7 +24,18 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```bash
 git clone https://github.com/vb64/nemo.rttm.git
 cd nemo.rttm
+```
+
+На Windows 10
+
+```bash
 make setup PYTHON_BIN=python3
+```
+
+На других платформах
+
+```bash
+make setup_win10 PYTHON_BIN=python3
 ```
 
 ## Ссылки
