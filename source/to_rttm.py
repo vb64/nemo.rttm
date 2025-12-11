@@ -30,6 +30,12 @@ PARSER.add_argument(
   help="Rttm file for output."
 )
 PARSER.add_argument(
+  "--device",
+  default="cpu",
+  choices=["cpu", "cuda"],
+  help="Used device. Default: cpu"
+)
+PARSER.add_argument(
   "--num_speakers",
   type=int,
   default=0,
@@ -90,7 +96,7 @@ def get_tasks(mp3_file, temp_folder, max_length_sec):
     return names
 
 
-def make_rttm(mp3_file, num_speakers, config_file, temp_folder):
+def make_rttm(mp3_file, num_speakers, config_file, temp_folder, device):
     """Create rttm file by given mp3."""
     waveform = faster_whisper.decode_audio(mp3_file)
     name = os.path.basename(mp3_file)
@@ -101,7 +107,7 @@ def make_rttm(mp3_file, num_speakers, config_file, temp_folder):
       16000,
       channels_first=True
     )
-    diarize(wav_file, 'cpu', num_speakers, temp_folder, config_file)
+    diarize(wav_file, device, num_speakers, temp_folder, config_file)
     audio = AudioSegment.from_mp3(mp3_file)
 
     return (
@@ -117,7 +123,7 @@ def main(options):
 
     os.makedirs(options.temp_folder, exist_ok=True)
     rttm = join_rttms([
-      make_rttm(i, options.num_speakers, options.config, options.temp_folder)
+      make_rttm(i, options.num_speakers, options.config, options.temp_folder, options.device)
       for i in get_tasks(options.mp3_file, options.temp_folder, options.max_length)
     ])
     rttm.save(options.rttm_file)
