@@ -53,6 +53,9 @@ build/%.rttm: build/%.mp3
 
 rttm: $(RTTM)
 
+cuda:
+	$(PYTHON) $(SOURCE)/to_rttm.py --device cuda --config nemo.config/diar_infer_telephonic.yaml --temp_folder build/temp build/xxx.mp3 build/xxx.rttm
+
 setup: setup_python setup_pip
 
 setup_win10: setup_python setup_pip_win10
