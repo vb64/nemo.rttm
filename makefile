@@ -19,11 +19,6 @@ PYLINT = $(PYTHON) -m pylint
 PYTEST = $(PTEST) --cov=$(SOURCE) --cov-report term:skip-covered
 PIP = $(PYTHON) -m pip install
 
-MP3 = \
-xxx.mp3 \
-
-RTTM = $(addprefix build/,$(subst .mp3,.rttm,$(MP3)))
-
 all: tests
 
 flake8:
@@ -48,10 +43,8 @@ cover: flake8 pep257 lint
 	$(PYTEST) --durations=5 $(TESTS)
 	$(COVERAGE) html --skip-covered
 
-build/%.rttm: build/%.mp3
-	$(PYTHON) $(SOURCE)/to_rttm.py --config nemo.config/diar_infer_telephonic.yaml --temp_folder build/temp $< $@
-
-rttm: $(RTTM)
+rttm:
+	$(PYTHON) $(SOURCE)/to_rttm.py --config nemo.config/diar_infer_telephonic.yaml --temp_folder build/temp build/xxx.mp3 build/xxx.rttm
 
 setup: setup_python setup_pip
 
